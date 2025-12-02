@@ -7,7 +7,21 @@ import path from "path";
 
 const app = express();
 
-app.use(cors());
+const allowedOrigins = [process.env.DEV_FRONTEND_URL, process.env.PROD_FRONTEND_URL];
+app.use(
+    cors({
+        origin: (origin, callback) => {
+            if (!origin) return callback(null, true);
+
+            if (allowedOrigins.includes(origin)) {
+                callback(null, true);
+            } else {
+                callback(new Error("Not allowed"));
+            }
+        },
+        credentials: true,
+    })
+);
 app.use(express.json());
 app.use(morgan("dev"));
 
