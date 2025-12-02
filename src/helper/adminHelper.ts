@@ -1,6 +1,7 @@
 import { Admin } from "../model/index";
 import { AdminRoles, IAccountStatus, IAdmin, IAdminResponse, ILoginResponse } from "../interface";
 import { generateToken } from "../functions";
+import { Document, isValidObjectId } from "mongoose";
 
 export const addAdmin = async (newAdmin: IAdmin): Promise<IAdminResponse> => {
     try {
@@ -101,6 +102,49 @@ export const adminLogin = (username: string, email: string, phone: string, passw
                 message: error.message || error.msg || "Admin login failed",
                 statusCode: error.statusCode || 500,
                 code: error.code || error.name,
+            });
+        }
+    });
+};
+
+export const checkAdminStatus = (adminId: Document["_id"] | string, status: IAdmin["status"][]) => {
+    return new Promise<IAdminResponse>(async (resolve, reject) => {
+        try {
+            if (!adminId || !isValidObjectId(adminId) || status.length <= 0)
+                throw { message: "Provide vaild admin id and status", statusCode: 400 };
+
+            const admin = await Admin.findOne(
+                { _id: adminId, isDeleted: false },
+                {
+                    name: 1,
+                    role: 1,
+                    username: 1,
+                    email: 1,
+                    phone: 1,
+                    status: 1,
+                    createdAt: 1,
+                }
+            );
+
+            if (!admin) throw { message: "Admin not found", statusCode: 404 };
+
+            if (admin.status === IAccountStatus.INACTIVE) admin.status = IAccountStatus.ACTIVE;
+            const editedAdmin = await admin.save();
+
+            if (status.includes(admin.status)) {
+                return resolve({
+                    message: `Admin is ${admin.status}`,
+                    result: editedAdmin,
+                    success: true,
+                });
+            } else {
+                throw { message: `Admin is ${admin.status}`, statusCode: 403 };
+            }
+        } catch (error: any) {
+            reject({
+                message: error.message || error.msg || "Status checking failed",
+                statusCode: error.statusCode || 500,
+                code: error.code || error.names,
             });
         }
     });

@@ -1,3 +1,5 @@
+import { Document } from "mongoose";
+
 export enum AdminRoles {
     ADMIN = "Admin",
     SUPER_ADMIN = "SuperAdmin",
@@ -12,7 +14,7 @@ export enum IAccountStatus {
     BLOCKED = "Blocked",
 }
 
-export interface IAdmin {
+export interface IAdmin extends Document {
     name: string;
     username: string;
     password: string;

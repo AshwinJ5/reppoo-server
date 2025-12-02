@@ -1,5 +1,10 @@
-import jwt, { SignOptions } from "jsonwebtoken";
+import jwt, { JwtPayload, SignOptions } from "jsonwebtoken";
 
+
+interface DecodedToken extends JwtPayload {
+    id: string;
+    role: string;
+}
 export interface IAdminPayload extends jwt.JwtPayload {
     id: string;
     name: string;
@@ -18,4 +23,24 @@ export const generateToken = (payload: IAdminPayload): string => {
     };
 
     return jwt.sign(payload, secret, options);
+};
+
+export const verifyToken = async (
+    token: string,
+): Promise<DecodedToken> => {
+    try {
+        const secret = process.env.JWT_SECRET
+
+        if (!secret) {
+            throw new Error("JWT_SECRET  not configured");
+        }
+
+        const decoded = jwt.verify(token, secret) as DecodedToken;
+        return decoded;
+    } catch (error: any) {
+        throw {
+            message: "Invalid or expired token",
+            statusCode: 401,
+        };
+    }
 };

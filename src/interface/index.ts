@@ -3,6 +3,7 @@ import { IAdmin, AdminRoles, IAccountStatus, IAdminResponse, ILoginResponse } fr
 import { IFaq, IFaqResponse, IFaqPaginationResponse } from "./faqInterface";
 import { ITestimonial, ITestimonialResponse, ITestimonialPaginationResponse } from "./testimonialInterface";
 import { IHero, IHeroResponse } from "./heroInterface";
+import { IFeature, IFeatureResponse } from "./featureInterface";
 
 export {
     IResponseMessage,
@@ -19,4 +20,6 @@ export {
     ITestimonialPaginationResponse,
     IHero,
     IHeroResponse,
+    IFeature,
+    IFeatureResponse,
 };

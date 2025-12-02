@@ -1,4 +1,6 @@
-export interface IHero {
+import { Document } from "mongoose";
+
+export interface IHero extends Document {
     title: string;
     subtitle: string;
     heroImage: string;
