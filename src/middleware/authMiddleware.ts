@@ -33,6 +33,6 @@ export const adminAccess = async (req: Request, res: Response, next: NextFunctio
             throw { message: "Unauthenticated", statusCode: 403 };
         }
     } catch (error: any) {
-        return next();
+        return next(error);
     }
 };
