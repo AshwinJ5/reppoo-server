@@ -114,7 +114,7 @@ export const checkAdminStatus = (adminId: Document["_id"] | string, status: IAdm
                 throw { message: "Provide vaild admin id and status", statusCode: 400 };
 
             const admin = await Admin.findOne(
-                { _id: adminId, isDeleted: false },
+                { _id: adminId },
                 {
                     name: 1,
                     role: 1,
