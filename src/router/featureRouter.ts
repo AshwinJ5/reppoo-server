@@ -9,7 +9,7 @@ const { addFeature, editFeature, getFeature } = featureController;
 
 router
     .route("/")
-    .get(adminAccess,getFeature)
+    .get(getFeature)
     .post(adminAccess, uploadImage("features").single("image"), addFeature)
     .patch(adminAccess, uploadImage("features").single("image"), editFeature);
 

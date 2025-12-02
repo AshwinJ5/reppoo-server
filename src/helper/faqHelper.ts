@@ -98,7 +98,7 @@ export const addFaq = async (newFaq: IFaq): Promise<IFaqResponse> => {
 
         const faq = new Faq({
             question: newFaq.question,
-            answer: newFaq.answer.toLowerCase(),
+            answer: newFaq.answer,
         });
         const editedFaq = await faq.save();
 
