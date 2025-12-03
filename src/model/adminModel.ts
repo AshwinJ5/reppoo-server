@@ -21,6 +21,7 @@ const adminSchema = new Schema<IAdminDocument>(
             type: String,
             required: true,
             unique: true,
+            sparse:true,
             lowercase: true,
             trim: true,
             minlength: 3,

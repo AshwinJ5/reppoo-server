@@ -8,12 +8,12 @@ export const addAdmin = async (newAdmin: IAdmin): Promise<IAdminResponse> => {
         if (!newAdmin.name || !newAdmin.username || !newAdmin.email) {
             throw { message: "Missing fields", statusCode: 400 };
         }
+console.log(newAdmin);
 
         const exists = await Admin.findOne({
             $or: [
                 { username: newAdmin.username.toLowerCase() },
                 { email: newAdmin.email.toLowerCase() },
-                { phone: newAdmin.phone },
             ],
         });
 
